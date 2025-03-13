@@ -36,10 +36,10 @@ const Header = () => {
               {isOpen ? <IoClose /> : <IoMenu />}
             </div>
             <div className="max-sm:hidden hover:bg-white p-2 hover:text-black">
-              Faça login
+              <Link href="/login">Faça login</Link>
             </div>
             <div className="max-sm:hidden hover:bg-white p-2 hover:text-black">
-              Registre-se
+              <Link href="/register">Registre-se</Link>
             </div>
           </div>
         </nav>
@@ -50,14 +50,10 @@ const Header = () => {
           className="md:hidden max-sm:fixed max-sm:flex max-sm:flex-col max-sm:items-center max-sm:h-screen max-sm:w-full max-sm:bg-gray-950 max-sm:z-11"
         >
           <div className="hover:bg-white p-2 hover:text-black text-2xl">
-            <Link href="/login" prefetch={false}>
-              Faça login
-            </Link>
+            <Link href="/login">Faça login</Link>
           </div>
           <div className=" hover:bg-white p-2 hover:text-black text-2xl">
-            <Link href="/register" prefetch={false}>
-              Registre-se
-            </Link>
+            <Link href="/register">Registre-se</Link>
           </div>
         </div>
       ) : null}
