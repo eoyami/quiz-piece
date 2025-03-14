@@ -16,7 +16,7 @@ export default function Home() {
         height={1080}
         muted
         autoPlay
-        className="absolute min-h-screen min-w-screen z-0 object-cover"
+        className="absolute min-h-screen min-w-screen z-0 object-cover blur-sm"
       >
         <source src="/assets/backgroundvideo.mp4" />
       </video>
