@@ -24,11 +24,16 @@ const Header = () => {
   }, [patchname]);
   return (
     <div>
-      <section className="flex px-4 py-2 bg-gray-950">
+      <header className="flex px-4 py-2 bg-gray-950">
         <nav className="flex justify-between w-full">
           <div>
             <Link href={"/"}>
-              <Image src={QuizPieceLogo} alt="Logo Quiz Piece" height={40} />
+              <Image
+                src={QuizPieceLogo}
+                alt="Logo Quiz Piece"
+                height={40}
+                loading="lazy"
+              />
             </Link>
           </div>
           <div className="flex justify-center items-center">
@@ -43,7 +48,7 @@ const Header = () => {
             </div>
           </div>
         </nav>
-      </section>
+      </header>
       {isOpen ? (
         <div
           id="menu-mobile"
