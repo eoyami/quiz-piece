@@ -2,9 +2,15 @@
 
 import React, { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
-import { NextResponse } from "next/server";
+import { z } from "zod";
 
 const RegisterForm = () => {
+  const registerSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6),
+    passwordConfirmation: z.string().min(6),
+  });
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
@@ -15,20 +21,33 @@ const RegisterForm = () => {
     e.preventDefault();
     (e.target as HTMLFormElement).reset();
 
+    const registerData: z.infer<typeof registerSchema> = {
+      email,
+      password,
+      passwordConfirmation,
+    };
+
     if (!email || !password || !passwordConfirmation) {
-      setError("Preencha todos os campos");
+      setTimeout(() => {
+        setError("Preencha todos os campos");
+      }, 3000);
       return;
     }
 
     if (password !== passwordConfirmation) {
       setError("Senhas não conferem");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
       return;
     }
 
     try {
-      const responseUserExist = await fetch("/api/userExists", {
+      const responseUserExist = await fetch("/api/register", {
         method: "POST",
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({
+          email: registerData.email,
+        }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -41,10 +60,13 @@ const RegisterForm = () => {
         }, 3000);
         return;
       }
-
       const response = await fetch("/api/register", {
         method: "POST",
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email: registerData.email,
+          password: registerData.password,
+          passwordConfirmation: registerData.passwordConfirmation,
+        }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -92,6 +114,7 @@ const RegisterForm = () => {
           <label htmlFor="password">Senha</label>
           <input
             type="password"
+            min={6}
             placeholder="******"
             name="password"
             className="bg-white text-black"
@@ -105,6 +128,7 @@ const RegisterForm = () => {
           <input
             type="password"
             placeholder="******"
+            min={6}
             name="passwordConfirmation"
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setPasswordConfirmation(e.target.value)
