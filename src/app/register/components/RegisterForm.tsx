@@ -75,7 +75,7 @@ const RegisterForm = () => {
     } catch (error) {
       setError("Erro ao criar usuário");
       setTimeout(() => {
-        setError("");
+        setError(`${error}`);
       }, 3000);
     }
   };

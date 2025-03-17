@@ -1,7 +1,7 @@
 import { ZodSchema } from "zod";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export function validateSchema<T>(schema: ZodSchema<T>, data: any) {
+export function validateSchema<T>(schema: ZodSchema<T>, data: NextRequest) {
   const result = schema.safeParse(data);
 
   if (!result.success) {
