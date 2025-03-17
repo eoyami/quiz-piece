@@ -17,7 +17,8 @@ const LoginForm = () => {
       const res = await signIn("credentials", {
         email,
         password,
-        redirect: false,
+        redirect: true,
+        callbackUrl: "/game",
       });
 
       if (res?.error) {

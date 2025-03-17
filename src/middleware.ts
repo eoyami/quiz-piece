@@ -7,7 +7,6 @@ export default withAuth({
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     authorized({ token }) {
-      console.log("Middleware foi executado!", token);
       return !!token; // Apenas permite usuários autenticados
     },
   },
