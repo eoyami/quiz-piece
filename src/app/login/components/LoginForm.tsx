@@ -1,6 +1,33 @@
-import React from "react";
+"use client";
+
+import { signIn } from "next-auth/react";
+import { ChangeEvent, ChangeEventHandler, useState } from "react";
 
 const LoginForm = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+
+  async function handlerLogin() {
+    try {
+      if (!email || !password) {
+        setError("Preencha todos os campos");
+      }
+
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (res?.error) {
+        alert(res.error);
+        return;
+      }
+    } catch (error) {
+      setError(error as string);
+    }
+  }
   return (
     <section className="flex flex-col w-screen justify-center items-center bg-neutral-950 max-sm:py-6">
       <form
@@ -18,6 +45,9 @@ const LoginForm = () => {
             placeholder="seuemail@gmail.com"
             name="email"
             className="bg-white text-black"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setEmail(e.target.value);
+            }}
           />
         </div>
         <div className="flex flex-col text-xl">
@@ -27,12 +57,20 @@ const LoginForm = () => {
             placeholder="******"
             name="password"
             className="bg-white text-black"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setPassword(e.target.value);
+            }}
           />
         </div>
         <div className="my-5">
-          <button className="text-xl w-full bg-white border-2 text-gray-950 hover:bg-gray-950 hover:text-white hover:border-2 hover:border-white">
+          <button
+            className="text-xl w-full bg-white border-2 text-gray-950 hover:bg-gray-950 hover:text-white hover:border-2 hover:border-white"
+            onClick={handlerLogin}
+          >
             SIGN IN
           </button>
+
+          {error && <div className="bg-red-500">{error}</div>}
         </div>
       </form>
     </section>

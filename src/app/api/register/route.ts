@@ -2,38 +2,29 @@ import { NextResponse, NextRequest } from "next/server";
 import { User } from "../db/models/Users";
 import connectDB from "../db/connectDB";
 import bcrypt from "bcryptjs";
-import { z, ZodString } from "zod";
+import { RegisterType, registerSchema } from "./schemas/register.schema";
+import { validateSchema } from "../middlewares/user.validation";
 
 export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const validateError = validateSchema(registerSchema, body);
+
+  if (validateError) return validateError;
+
+  const { email, password, passwordConfirmation }: RegisterType = body;
   await connectDB();
-
-  const RegisterSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6),
-    passwordConfirmation: z.string().min(6),
-  });
-
-  const requestData = await req.json();
-
-  const { email } = RegisterSchema.pick({ email: true }).parse(requestData);
-
   const existingUser = await User.findOne({ email }).select("_id");
 
-  if (existingUser) {
-    return NextResponse.json(
-      { message: "Usuário já registrado" },
-      { status: 409 }
-    );
-  }
-  const { password, passwordConfirmation } = RegisterSchema.pick({
-    password: true,
-    passwordConfirmation: true,
-  }).parse(requestData);
-  console.log(password, passwordConfirmation);
   if (!email || !password || !passwordConfirmation) {
     return NextResponse.json(
       { message: "Preencha todos os campos" },
       { status: 400 }
+    );
+  }
+  if (existingUser) {
+    return NextResponse.json(
+      { message: "Usuário já registrado" },
+      { status: 409 }
     );
   }
 

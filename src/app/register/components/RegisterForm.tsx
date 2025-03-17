@@ -2,15 +2,9 @@
 
 import React, { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
-import { z } from "zod";
+import type { RegisterType } from "../../api/register/schemas/register.schema";
 
 const RegisterForm = () => {
-  const registerSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6),
-    passwordConfirmation: z.string().min(6),
-  });
-
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
@@ -21,7 +15,7 @@ const RegisterForm = () => {
     e.preventDefault();
     (e.target as HTMLFormElement).reset();
 
-    const registerData: z.infer<typeof registerSchema> = {
+    const registerData: RegisterType = {
       email,
       password,
       passwordConfirmation,
