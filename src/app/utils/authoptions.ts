@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Senha incorreta!");
         }
 
-        return { id: user._id, name: user.name, email: user.email };
+        return { id: user._id, email: user.email };
       },
     }),
   ],

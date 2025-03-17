@@ -53,7 +53,7 @@ const LoginForm = () => {
         <div className="flex flex-col text-xl">
           <label htmlFor="password">Senha</label>
           <input
-            type="text"
+            type="password"
             placeholder="******"
             name="password"
             className="bg-white text-black"
