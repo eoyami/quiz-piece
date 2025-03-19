@@ -21,13 +21,12 @@ export const metadata: Metadata = {
   description: "Um jogo de quiz com temática de One Piece",
 };
 
-const data = useSession().data;
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const data = useSession().data;
   return (
     <html lang="en">
       <body
