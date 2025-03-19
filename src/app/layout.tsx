@@ -4,8 +4,6 @@ import Header from "./components/header";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "./api/providers/AuthProvider";
-import { useState, useEffect } from "react";
-import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 
 const geistSans = Geist({
@@ -28,17 +26,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [userSession, setUserSession] = useState<Session | null>(null);
   const { data } = useSession();
-  useEffect(() => {
-    setUserSession(data);
-  }, [userSession]);
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider session={userSession}>
+        <AuthProvider session={data}>
           <main className="relative flex flex-col w-screen h-screen">
             <Header />
             {children}
