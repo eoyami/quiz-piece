@@ -4,7 +4,8 @@ import Header from "./components/header";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "./api/providers/AuthProvider";
-import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./utils/authoptions";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,18 +22,20 @@ export const metadata: Metadata = {
   description: "Um jogo de quiz com temática de One Piece",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const data = useSession().data;
+  //fetch
+
+  const session = await getServerSession(authOptions);
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider session={data}>
+        <AuthProvider session={session}>
           <main className="relative flex flex-col w-screen h-screen">
             <Header />
             {children}
