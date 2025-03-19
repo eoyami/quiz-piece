@@ -1,14 +1,15 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, MouseEventHandler, useState } from "react";
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  async function handlerLogin() {
+  async function handlerLogin(e: React.MouseEvent) {
+    e.preventDefault();
     try {
       if (!email || !password) {
         setError("Preencha todos os campos");
