@@ -55,7 +55,7 @@ const Header = () => {
               <Link href="/game">Game</Link>
             </div>) : null}
             {isAuth === 'authenticated' ? (null) : (
-              <div className="hover:bg-white p-2 hover:text-black">
+              <div className="max-sm:hidden hover:bg-white p-2 hover:text-black">
               <Link href="/login">Faça login</Link>
           </div>)
           }
@@ -64,7 +64,7 @@ const Header = () => {
                 handleSignOut();
               }}>
               Sign Out
-          </div>) : <div className="hover:bg-white p-2 hover:text-black">
+          </div>) : <div className="max-sm:hidden hover:bg-white p-2 hover:text-black">
             <Link href="/register">Registre-se</Link>
           </div>}
           </div>
@@ -85,7 +85,7 @@ const Header = () => {
           
           
           {isAuth === 'authenticated' ? (
-            <div className="hover:bg-white p-2 hover:text-black text-2xl border-2 border-white" onClick={() => {
+            <div className="hover:bg-white p-2 hover:text-black text-2xl" onClick={() => {
               handleSignOut();
             }}>
             <div>Sign Out</div>
