@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 import Yamato from '../../../public/assets/question_yamato.png'
 import type { Session } from "next-auth";
@@ -13,6 +13,60 @@ const GamePage = () => {
     setUserSession(session);
   }, [session]);
 
+
+  class counttimer {
+    private tempoRestante: number;
+    private setIntervalo: NodeJS.Timeout | null = null
+    private isRunning: boolean = false
+    constructor(TempoInicial: number) {
+      this.tempoRestante = TempoInicial
+    }
+
+    start(){
+      if(this.isRunning){
+        console.log("timer em execução")
+        return
+      }
+
+      if(this.tempoRestante <= 0){
+        console.log("tempo acabou")
+        return
+      }
+
+      this.isRunning = true
+      this.setIntervalo = setInterval(() => {
+
+        if(this.tempoRestante > 0){
+          this.tempoRestante -= 1
+          setTimer(this.tempoRestante)
+
+        } else{
+          console.log('Tempo esgotado')
+          this.stop()
+        }
+
+      }, 1000)}
+
+      stop(){
+        if(this.setIntervalo){
+          clearInterval(this.setIntervalo)
+          this.isRunning = false
+          return 0
+        }
+      }
+
+      getTempoRestante(){
+        if(this.tempoRestante > 0){
+          return this.tempoRestante
+        }
+        return 0
+      }
+
+
+  }
+  const counttimerGame = new counttimer(15)
+  const [timer, setTimer] = useState<number>(counttimerGame.getTempoRestante())
+
   return (
     <>
     {userSession ? (
@@ -20,7 +74,8 @@ const GamePage = () => {
       <div className="flex flex-col justify-center items-center text-2xl">
         {userSession && (
           <>
-          <div>Timer: 00:10</div>
+          <button onClick={() => {counttimerGame.start()}}>começar</button>
+          {timer > 0 ? (<div>Timer: {timer}</div>) : (<div>Tempo acabou</div>) }
           <div className="flex">
             
             <div className="flex flex-col bg-white text-gray-900 p-3">
