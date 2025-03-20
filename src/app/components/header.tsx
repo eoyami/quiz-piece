@@ -85,7 +85,7 @@ const Header = () => {
           
           
           {isAuth === 'authenticated' ? (
-            <div className="hover:bg-white p-2 hover:text-black" onClick={() => {
+            <div className="hover:bg-white p-2 hover:text-black text-2xl border-2 border-white" onClick={() => {
               handleSignOut();
             }}>
             <div>Sign Out</div>

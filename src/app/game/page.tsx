@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Yamato from '../../../public/assets/question_yamato.png'
@@ -11,10 +11,12 @@ const GamePage = () => {
   const { data: session } = useSession();
   useEffect(() => {
     setUserSession(session);
-  }, [userSession]);
+  }, [session]);
 
   return (
-    <section className="flex flex-col w-screen h-screen justify-center items-center bg-neutral-950 max-sm:py-6 max-sm:px-3">
+    <>
+    {userSession ? (
+      <section className="flex flex-col w-screen h-screen justify-center items-center bg-neutral-950 max-sm:py-6 max-sm:px-3">
       <div className="flex flex-col justify-center items-center text-2xl">
         {userSession && (
           <>
@@ -31,6 +33,8 @@ const GamePage = () => {
         )}
       </div>
     </section>
+    ) : null}
+    </>
   );
 };
 
