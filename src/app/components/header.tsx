@@ -21,7 +21,7 @@ const Header = () => {
     });
   }, [isOpen]);
 
-  const {status} = useSession()
+  const {data: session, status} = useSession()
   const [isAuth, setIsAuth] = useState<"authenticated" | "unauthenticated" | "loading">("loading")
 
   useEffect(() => {
@@ -31,7 +31,6 @@ const Header = () => {
   const handleSignOut = () => {
     signOut({ callbackUrl: "/" });
   };
-
   useEffect(()=> {setIsAuth(status)}, [status])
   return (
     <div>
@@ -51,6 +50,11 @@ const Header = () => {
             <div id="btn-mobile" className="hidden max-sm:flex text-3xl">
               {isOpen ? <IoClose /> : <IoMenu />}
             </div>
+            
+            {isAuth === 'authenticated' ? (<div className="max-sm:hidden font-bold p-2">
+              <div>Bem vindo, {session?.user?.email?.split("@")[0]}</div>
+            </div>) : null}
+
             {isAuth === 'authenticated' ? (<div className="max-sm:hidden hover:bg-white p-2 hover:text-black">
               <Link href="/game">Game</Link>
             </div>) : null}
