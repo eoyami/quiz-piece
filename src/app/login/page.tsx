@@ -4,7 +4,7 @@ import LoginForm from "./components/LoginForm";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 
-const page = () => {
+const Page = () => {
   const { status } = useSession()
   const {data: session} = useSession()
    const [isAuth, setIsAuth] = useState<"authenticated" | "unauthenticated" | "loading">("loading")
@@ -33,4 +33,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
