@@ -13,10 +13,6 @@ const GamePage = () => {
     setUserSession(session);
   }, [userSession]);
 
-  const handleSignOut = () => {
-    signOut({ callbackUrl: "/" });
-  };
-
   return (
     <section className="flex flex-col w-screen h-screen justify-center items-center bg-neutral-950 max-sm:py-6 max-sm:px-3">
       <div className="flex flex-col justify-center items-center text-2xl">

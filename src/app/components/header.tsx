@@ -84,14 +84,12 @@ const Header = () => {
           </div>}
           
           
-          {isAuth === 'authenticated' ? (<button
-            className="bg-white text-black"
-            onClick={() => {
+          {isAuth === 'authenticated' ? (
+            <div className="hover:bg-white p-2 hover:text-black" onClick={() => {
               handleSignOut();
-            }}
-          >
-            Sign Out
-          </button>) : <div className="hover:bg-white p-2 hover:text-black ">
+            }}>
+            <div>Sign Out</div>
+          </div>) : <div className="hover:bg-white p-2 hover:text-black ">
             <Link href="/register">Registre-se</Link>
           </div>}
         </div>
