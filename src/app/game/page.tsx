@@ -44,18 +44,9 @@ const GamePage = () => {
 
         } else{
           console.log('Tempo esgotado')
-          this.stop()
         }
 
       }, 1000)}
-
-      stop(){
-        if(this.setIntervalo){
-          clearInterval(this.setIntervalo)
-          this.isRunning = false
-          return 0
-        }
-      }
 
       getTempoRestante(){
         if(this.tempoRestante > 0){
@@ -63,7 +54,6 @@ const GamePage = () => {
         }
         return 0
       }
-
 
   }
 
