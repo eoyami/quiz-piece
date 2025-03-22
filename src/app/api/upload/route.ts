@@ -2,11 +2,13 @@ import { put } from "@vercel/blob"
 import { NextResponse, NextRequest } from "next/server"
 import dotenv from "dotenv"
 import { Quizes } from "../db/models/Quizes"
+import connectDB from "../db/connectDB"
 
 dotenv.config()
 
 export async function POST(req: NextRequest) {
     try {
+        
         const { searchParams } = new URL(req.url)
 
         const filename = searchParams.get('filename')
@@ -31,23 +33,22 @@ export async function POST(req: NextRequest) {
             access: "public",
             token: process.env.BLOB_READ_WRITE_TOKEN
         })
-        console.log('----------------------------------------------------');
-        console.log('Blob URL:', blob.url + ' | Question: ', question);
-        console.log('----------------------------------------------------');
         
         if (!blob.url) {
         throw new Error('URL inválida');
         }
+        await connectDB()
 
-        await Quizes.create({
+        const createdQuiz = await Quizes.create({
             question: question,
             imgUrl: blob.url
         })
+
+        return NextResponse.json({ message: "Enviado com sucesso", data: createdQuiz }, {status: 201})
     } catch (error) {
         console.error('Erro ao processar a requisição:', error);
         return NextResponse.json({ error: 'Failed to process request' }, { status: 500 });
-
     }
-    return NextResponse.json({ message: "Enviado com sucesso" }, {status: 201})
+
 
 }
