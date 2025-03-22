@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-const quizModel = new mongoose.Schema({
+const quizSchema = new mongoose.Schema({
     question: {
         type: String,
         required: true
@@ -14,4 +14,4 @@ const quizModel = new mongoose.Schema({
 
 
 
-export const Quizes = mongoose.models.Quizes || mongoose.model('Quizes', quizModel) 
+export const Quizes = mongoose.models.Quizes || mongoose.model('Quizes', quizSchema) 

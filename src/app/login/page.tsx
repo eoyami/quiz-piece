@@ -5,8 +5,7 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 
 const Page = () => {
-  const { status } = useSession()
-  const {data: session} = useSession()
+  const {data: session, status } = useSession()
    const [isAuth, setIsAuth] = useState<"authenticated" | "unauthenticated" | "loading">("loading")
 
   useEffect(()=> {

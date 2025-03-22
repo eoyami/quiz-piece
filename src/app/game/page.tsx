@@ -18,7 +18,6 @@ const GamePage = () => {
 
   class counttimer {
     private tempoRestante: number;
-    private setIntervalo: NodeJS.Timeout | null = null
     private isRunning: boolean = false
     constructor(TempoInicial: number) {
       this.tempoRestante = TempoInicial
@@ -36,7 +35,7 @@ const GamePage = () => {
       }
 
       this.isRunning = true
-      this.setIntervalo = setInterval(() => {
+      setInterval(() => {
 
         if(this.tempoRestante > 0){
           this.tempoRestante -= 1
