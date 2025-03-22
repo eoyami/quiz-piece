@@ -31,11 +31,12 @@ export async function POST(req: NextRequest) {
             access: "public",
             token: process.env.BLOB_READ_WRITE_TOKEN
         })
-
-        console.log('Blob URL:', blob.url + 'Question: ', question);
-
+        console.log('----------------------------------------------------');
+        console.log('Blob URL:', blob.url + ' | Question: ', question);
+        console.log('----------------------------------------------------');
+        
         if (!blob.url) {
-        throw new Error('A URL do Blob não foi gerada corretamente.');
+        throw new Error('URL inválida');
         }
 
         await Quizes.create({
