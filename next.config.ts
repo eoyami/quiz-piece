@@ -1,7 +1,11 @@
-import type { NextConfig } from "next";
+import { hostname } from "os";
 
-const nextConfig: NextConfig = {
-  /* config options here */
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        hostname: 'orygzsa3mpmsblmt.public.blob.vercel-storage.com'
+      }
+    ]
+  },
 };
-
-export default nextConfig;
