@@ -1,33 +1,34 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-
-const dbURI = process.env.DB_URI
-
-if (!dbURI) {
-  throw new Error('Defina a URL da DB')
+interface Cached {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
 }
 
-let cached = global.mongoose
+// Use a global variable to store the cached connection
+const globalWithCached = global as typeof globalThis & { _mongooseCached?: Cached };
 
-
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+if (!globalWithCached._mongooseCached) {
+  globalWithCached._mongooseCached = { conn: null, promise: null };
 }
-const connectDB = async () => {
+
+const cached = globalWithCached._mongooseCached;
+
+const connectDB = async (dbURI: string) => {
   if (cached.conn) {
-    return cached.coon
+    return cached.conn; // Fixed typo here
   }
 
   if (!cached.promise) {
     const opts = {
-      bufferCommands: false
-    }
-    
-    cached.promise = mongoose.connect(dbURI, opts).then((mongoose) => {return mongoose})
+      bufferCommands: false,
+    };
+
+    cached.promise = mongoose.connect(dbURI, opts).then((mongoose) => mongoose);
   }
 
-  cached.conn = await cached.promise
-  return cached.conn
+  cached.conn = await cached.promise;
+  return cached.conn;
 };
 
 export default connectDB;
