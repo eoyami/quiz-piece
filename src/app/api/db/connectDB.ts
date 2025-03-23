@@ -13,8 +13,13 @@ if (!globalWithCached._mongooseCached) {
 }
 
 const cached = globalWithCached._mongooseCached;
+const dbURI = process.env.DB_URI
 
-const connectDB = async (dbURI: string) => {
+if (!dbURI) {
+  throw new Error('error:')
+}
+
+const connectDB = async () => {
   if (cached.conn) {
     return cached.conn; // Fixed typo here
   }
