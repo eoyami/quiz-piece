@@ -1,10 +1,7 @@
 import { put } from "@vercel/blob"
 import { NextResponse, NextRequest } from "next/server"
-import dotenv from "dotenv"
 import { Quizes } from "../db/models/Quizes"
 import connectDB from "../db/connectDB"
-
-dotenv.config()
 
 export async function POST(req: NextRequest) {
     try {
@@ -16,6 +13,7 @@ export async function POST(req: NextRequest) {
         const formData = await req.formData()
         const question = formData.get('question') as string
         const file = formData.get('file') as File
+        const answer = formData.get('answer') as string
         
         if (!filename) {
             return NextResponse.json({ error: 'Filename is required' }, { status: 400 });
@@ -23,6 +21,10 @@ export async function POST(req: NextRequest) {
 
         if (!question) {
             return NextResponse.json({ error: 'Question is required' }, { status: 400 });
+        }
+        
+        if (!answer) {
+            return NextResponse.json({ error: 'Answer is required' }, { status: 400 });
         }
 
         if (!file) {
@@ -41,10 +43,11 @@ export async function POST(req: NextRequest) {
 
         const createdQuiz = await Quizes.create({
             question: question,
-            imgUrl: blob.url
+            answer: answer,
+            imgUrl: blob.url,
         })
-
-        return NextResponse.json({ message: "Enviado com sucesso", data: createdQuiz }, {status: 201})
+        return NextResponse.json({ message: "Enviado com sucesso", data: createdQuiz }, { status: 201 })
+        
     } catch (error) {
         console.error('Erro ao processar a requisição:', error);
         return NextResponse.json({ error: 'Failed to process request' }, { status: 500 });

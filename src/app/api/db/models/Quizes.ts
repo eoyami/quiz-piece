@@ -2,14 +2,9 @@ import mongoose from "mongoose";
 
 
 const quizSchema = new mongoose.Schema({
-    question: {
-        type: String,
-        required: true
-    },
-    imgUrl: {
-        type: String,
-        required: true 
-    }
+    question: { type: String, required: true},
+    answer: { type: String, required: true },
+    imgUrl: { type: String, required: true },
 })
 
 
