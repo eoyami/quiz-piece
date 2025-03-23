@@ -23,6 +23,7 @@ const GamePage = () => {
   class counttimer {
     private tempoRestante: number;
     private isRunning: boolean = false
+    private intervaloId: NodeJS.Timeout | null = null
     constructor(TempoInicial: number) {
       this.tempoRestante = TempoInicial
     }
@@ -39,15 +40,15 @@ const GamePage = () => {
       }
 
       this.isRunning = true
-      setInterval(() => {
+      const IntervaloId = setInterval(() => {
 
         if(this.tempoRestante > 0){
           this.tempoRestante -= 1
           setTimer(this.tempoRestante)
 
         } else {
-          
           console.log('Tempo esgotado')
+          this.stop()
         }
 
       }, 1000)}
@@ -56,9 +57,17 @@ const GamePage = () => {
         if(this.tempoRestante > 0){
           return this.tempoRestante
         }
-        return 0
+        return this.tempoRestante = 0
       }
-
+    
+    stop() {
+      if (this.intervaloId) {
+      clearInterval(this.intervaloId); // Limpa o intervalo usando o ID armazenado
+      this.isRunning = false;
+      this.intervaloId = null; // Reseta o ID do intervalo
+      console.log("Timer parado");
+    }
+    }
   }
 
   const handleGameStart = async () => {
@@ -123,7 +132,7 @@ const GamePage = () => {
         )}
       </div>
     </section>
-    ) : null}
+      ) : null}
     </>
   );
 };
