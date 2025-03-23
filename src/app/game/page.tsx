@@ -1,18 +1,17 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { Session } from "next-auth";
-import getRandomQuiz from "./randomQuiz";
-import Quizes from "../api/db/models/Quizes";
-import connectDB from "../api/db/connectDB";
 
 const GamePage = () => {
 
   const [question, setQuestion] = useState<string>('')
   const [answer, setAnswer] = useState<string>('')
-  const [imgUrl, setImgUrl] = useState<string> ('')
+  const [answerInput, setAnswerInput] = useState<string>('')
+  const [imgUrl, setImgUrl] = useState<string>('')
+  const scoreRef = useRef(0)
   const [userSession, setUserSession] = useState<Session | null>(null);
   const { data: session } = useSession();
   useEffect(() => {
@@ -81,6 +80,13 @@ const GamePage = () => {
     }
   }
 
+
+  const handlerAnswer = () => {
+    if (answer === answerInput) {
+      scoreRef.current += 1
+    }
+  }
+
   const counttimerGame = new counttimer(15)
   const [timer, setTimer] = useState<number>(counttimerGame.getTempoRestante())
 
@@ -94,14 +100,16 @@ const GamePage = () => {
         {userSession && (
           <>
           {timer > 0 ? (<>
-            <div>Tempo restante: {timer}</div>
+                  <div>Tempo restante: {timer}</div>
+                  <div>Pontuação: {scoreRef.current}</div>
           <div className="flex">
-            
           <div className="flex flex-col bg-white text-gray-900 p-3">
                       <div className="flex justify-center items-center"><h4>{question || "No question available"}</h4></div>
           <Image className="border-2 border-gray-900" src={imgUrl || "No img available"} width={300} height={300} alt=""></Image>
-          <div className="mt-3"><input type="text" placeholder="Put here your answer" className="w-full outline-hidden border-gray-900 border-2" /></div>
-          <button className="text-white bg-gray-900">Enviar resposta</button>
+                      <div className="mt-3">
+                        <input type="text" placeholder="Put here your answer" className="w-full outline-hidden border-gray-900 border-2" onChange={(e: ChangeEvent<HTMLInputElement>) => (setAnswerInput(e.target.value))} />
+                      </div>
+          <button className="text-white bg-gray-900" onClick={handlerAnswer}>Enviar resposta</button>
         </div>
         </div></>)
           : (<>

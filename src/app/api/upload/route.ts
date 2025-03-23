@@ -1,6 +1,6 @@
 import { put } from "@vercel/blob"
 import { NextResponse, NextRequest } from "next/server"
-import { Quizes } from "../db/models/Quizes"
+import Quizes from "../db/models/Quizes"
 import connectDB from "../db/connectDB"
 
 export async function POST(req: NextRequest) {

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { Document, Schema } from "mongoose";
 
-interface IUsers {
+interface IUsers extends Document {
   username: string,
   password: string,
   email: string
