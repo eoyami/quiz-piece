@@ -40,7 +40,7 @@ const GamePage = () => {
       }
 
       this.isRunning = true
-      const IntervaloId = setInterval(() => {
+      this.intervaloId = setInterval(() => {
 
         if(this.tempoRestante > 0){
           this.tempoRestante -= 1
