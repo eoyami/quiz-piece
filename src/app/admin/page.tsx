@@ -9,7 +9,7 @@ const Page = () => {
   const [answer, setAnswer] = useState<string>("")
   const [error, setError] = useState<string>("")
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       
       try {
@@ -24,17 +24,23 @@ const Page = () => {
         formData.append('answer', answer)
         formData.append('file', file)
 
-      await fetch(`/api/upload?filename=${file.name}`,
+      const response = await fetch(`/api/upload?filename=${file.name}`,
         {
           method: "POST",
           body: formData,
         }
       )
+        if (response.ok) {
+        setQuestion('')
+        setAnswer('')
+        if (inputFileRef.current) {
+            inputFileRef.current.value = ''
+        }
+      }
       } catch (e) {
-        throw new Error("Error: " + e)
         setError("Error: " + e)
       }
-    }
+  }
 
   return (
     <div className='flex flex-col mt-6'>
