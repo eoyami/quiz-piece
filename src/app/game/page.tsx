@@ -21,11 +21,7 @@ const GamePage = () => {
 
   const [gaming, setGaming] = useState<boolean>(false)
 
-  
-
-  
-
-  class counttimer {
+  class CountTimer {
     private tempoRestante: number;
     private isRunning: boolean = false
     private intervaloId: NodeJS.Timeout | null = null
@@ -72,12 +68,17 @@ const GamePage = () => {
         this.intervaloId = null;
         this.tempoRestante = 0
         return
+      }
     }
+
+    reset(TempoInicial: number) {
+      this.stop()
+      this.tempoRestante = TempoInicial
     }
   }
 
-  const counttimerGame = new counttimer(15)
-  const [timer, setTimer] = useState<number>(counttimerGame.getTempoRestante())
+  const counttimerGame = useRef(new CountTimer(15))
+  const [timer, setTimer] = useState<number>(counttimerGame.current.getTempoRestante())
 
   const handleNewQuiz = async () => {
     try {
@@ -98,7 +99,8 @@ const GamePage = () => {
     try {
       await handleNewQuiz()
       setGaming(true)
-      counttimerGame.start()
+      counttimerGame.current.reset(15)
+      counttimerGame.current.start()
       setAlert('')
     } catch (e) {
         throw new Error('error: ' + e)
@@ -106,24 +108,26 @@ const GamePage = () => {
   }
 
   const handleNewGame = async () => {
-    counttimerGame.stop();
+    counttimerGame.current.reset(15)
 
     setAnswerInput('')
     setAlert('');
-    setTimer(15)
 
     await handleGameStart()
     
   }
   
   const handlerAnswer = async () => {
-    if (answer === answerInput) {
+    if (answerInput === answer) {
       scoreRef.current += 1
-      counttimerGame.stop()
+      counttimerGame.current.reset(15)
+      setQuestion('')
+      setAnswer('')
       setAnswerInput('')
+      setAlert('')
       await handleNewGame()
+      return
     }
-
     setAlert('Sua resposta não é válida')
     setTimeout(() => {
       setAlert('')
@@ -147,7 +151,7 @@ const GamePage = () => {
                       <div className="flex justify-center items-center"><h4>{question || "No question available"}</h4></div>
                       <div className="flex justify-center items-center"><Image className="border-2 border-gray-900" src={imgUrl || "No img available"} width={300} height={300} alt=""></Image></div>
                       <div className="mt-3">
-                        <input type="text" placeholder="Put here your answer" className="w-full outline-hidden border-gray-900 border-2" onChange={(e: ChangeEvent<HTMLInputElement>) => (setAnswerInput(e.target.value))} />
+                        <input type="text" placeholder="Put here your answer" className="w-full outline-hidden border-gray-900 border-2" onChange={(e: ChangeEvent<HTMLInputElement>) => (setAnswerInput(e.target.value))} value={answerInput} />
                       </div>
                       <button className="text-white bg-gray-900" onClick={handlerAnswer}>Enviar resposta</button>
                       <div className="bg-red-500 text-white">{alert}</div>
