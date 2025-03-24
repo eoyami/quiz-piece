@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { Session } from "next-auth";
+import GameOver from "./components/GameOver";
 
 const GamePage = () => {
 
@@ -116,6 +117,19 @@ const GamePage = () => {
     await handleGameStart()
     
   }
+
+  const handleScore = async () => {
+    if (scoreRef.current <= 0) {
+      return
+    }
+    await fetch('/api/score', {
+      method: 'POST',
+      body: JSON.stringify({
+        username: session?.user?.email?.split("@")[0],
+        score: scoreRef.current
+      })
+    })
+  }
   
   const handlerAnswer = async () => {
     if (answerInput === answer) {
@@ -125,6 +139,7 @@ const GamePage = () => {
       setAnswer('')
       setAnswerInput('')
       setAlert('')
+      await handleScore()
       await handleNewGame()
       return
     }
@@ -136,41 +151,39 @@ const GamePage = () => {
 
   return (
     <>
-
       {gaming === false ? <button className="bg-green-500 text-black" onClick={handleGameStart}>Começar a jogar</button> : null}
-    {userSession && gaming ? (
-      <section className="flex flex-col w-screen h-screen justify-center items-center bg-neutral-950 max-sm:py-6 max-sm:px-3">
-      <div className="flex flex-col justify-center items-center text-2xl">
-        {userSession && (
-          <>
-          {timer > 0 ? (<>
-                  <div>Tempo restante: {timer}</div>
-                  <div>Pontuação: {scoreRef.current}</div>
-          <div className="flex">
-          <div className="flex flex-col bg-white text-gray-900 p-3">
-                      <div className="flex justify-center items-center"><h4>{question || "No question available"}</h4></div>
-                      <div className="flex justify-center items-center"><Image className="border-2 border-gray-900" src={imgUrl || "No img available"} width={300} height={300} alt=""></Image></div>
-                      <div className="mt-3">
-                        <input type="text" placeholder="Put here your answer" className="w-full outline-hidden border-gray-900 border-2" onChange={(e: ChangeEvent<HTMLInputElement>) => (setAnswerInput(e.target.value))} value={answerInput} />
+      {userSession && gaming ? (
+        <section className="flex flex-col w-screen h-screen justify-center items-center bg-neutral-950 max-sm:py-6 max-sm:px-3">
+          <div className="flex flex-col justify-center items-center text-2xl">
+            {userSession && (
+              <>
+                {timer > 0 ? (
+                  <>
+                    <div>Tempo restante: {timer}</div>
+                    <div>Pontuação: {scoreRef.current}</div>
+                    <div className="flex">
+                      <div className="flex flex-col bg-white text-gray-900 p-3">
+                        <div className="flex justify-center items-center"><h4>{question || "No question available"}</h4></div>
+                        <div className="flex justify-center items-center"><Image className="border-2 border-gray-900" src={imgUrl || "No img available"} width={300} height={300} alt=""></Image></div>
+                        <div className="mt-3">
+                          <input type="text" placeholder="Put here your answer" className="w-full outline-hidden border-gray-900 border-2" onChange={(e: ChangeEvent<HTMLInputElement>) => (setAnswerInput(e.target.value))} value={answerInput} />
+                        </div>
+                        <button className="text-white bg-gray-900" onClick={handlerAnswer}>Enviar resposta</button>
+                        <div className="bg-red-500 text-white">{alert}</div>
                       </div>
-                      <button className="text-white bg-gray-900" onClick={handlerAnswer}>Enviar resposta</button>
-                      <div className="bg-red-500 text-white">{alert}</div>
-        </div>
-        </div></>)
-          : (<>
-          <div className="bg-red-500">Tempo acabou</div>
-          <div className="flex flex-col justify-center mt-6">
-          <div>Quer jogar novamente?</div>
-                      <button className="bg-green-500" onClick={handleNewGame}>Iniciar jogo</button>
-          </div></>) }
-          
-          </>
-        )}
-      </div>
-    </section>
+                    </div>
+                  </>)
+                  : (
+                    <GameOver FuncHandleGame={handleNewGame} />
+                  )}
+              </>
+        
+            )}
+          </div>
+        </section>
       ) : null}
     </>
-  );
+  )
 };
 
 export default GamePage;
