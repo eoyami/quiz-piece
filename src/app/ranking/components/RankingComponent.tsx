@@ -3,8 +3,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 
+
+
+interface IRanking {
+    username: string,
+    score: number
+}
 const RankingComponent = () => {
-    const [ranking, setRanking] = useState<{}[]>([])
+    const [ranking, setRanking] = useState<IRanking[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
 
