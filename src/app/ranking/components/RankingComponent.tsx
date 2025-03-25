@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 const RankingComponent = () => {
     const [ranking, setRanking] = useState<string[]>([])
     const [loading, setLoading] = useState<boolean>(true)
-    const [error, setError] = useState(null)
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
     const fetchData = async () => {
@@ -17,8 +17,8 @@ const RankingComponent = () => {
             }
             const data = await response.json()
             setRanking(data.data)
-        } catch (e: any){
-            setError(e)
+        } catch (e){
+            setError('Error: ' + e)
         } finally {
             setLoading(false)
         }
