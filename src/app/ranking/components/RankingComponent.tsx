@@ -4,7 +4,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 
 const RankingComponent = () => {
-    const [ranking, setRanking] = useState<string[]>([])
+    const [ranking, setRanking] = useState<{}[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
 
