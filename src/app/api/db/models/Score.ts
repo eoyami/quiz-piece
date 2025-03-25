@@ -13,4 +13,4 @@ const scoreSchema = new Schema<IScore>({
 })
 
 
-export const Score = mongoose.models.Score || mongoose.model('Score', scoreSchema)
+export const Score = mongoose.models.Score || mongoose.model('Scores', scoreSchema)

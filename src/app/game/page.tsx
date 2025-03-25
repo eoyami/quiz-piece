@@ -172,7 +172,8 @@ const GamePage = () => {
                         <div className="bg-red-500 text-white">{alert}</div>
                       </div>
                     </div>
-                  </>)
+                  </>
+                )
                   : (
                     <GameOver FuncHandleGame={handleNewGame} />
                   )}

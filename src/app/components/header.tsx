@@ -58,6 +58,9 @@ const Header = () => {
             {isAuth === 'authenticated' ? (<div className="max-sm:hidden hover:bg-white p-2 hover:text-black">
               <Link href="/game">Game</Link>
             </div>) : null}
+            {isAuth === 'authenticated' ? (<div className="max-sm:hidden hover:bg-white p-2 hover:text-black">
+              <Link href="/ranking">Ranking</Link>
+            </div>) : null}
             {isAuth === 'authenticated' ? (null) : (
               <div className="max-sm:hidden hover:bg-white p-2 hover:text-black">
               <Link href="/login">Faça login</Link>
