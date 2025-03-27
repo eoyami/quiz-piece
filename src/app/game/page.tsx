@@ -15,13 +15,17 @@ const GamePage = () => {
   const [alert, setAlert] = useState<string>('')
   const scoreRef = useRef(0)
   const [userSession, setUserSession] = useState<Session | null>(null);
+
   const { data: session } = useSession();
+
   useEffect(() => {
     setUserSession(session);
   }, [session]);
 
   const [gaming, setGaming] = useState<boolean>(false)
+  const [gameOver, setGameOver] = useState<boolean>(false)
 
+  
   class CountTimer {
     private tempoRestante: number;
     private isRunning: boolean = false
@@ -81,6 +85,26 @@ const GamePage = () => {
   const counttimerGame = useRef(new CountTimer(15))
   const [timer, setTimer] = useState<number>(counttimerGame.current.getTempoRestante())
 
+
+  useEffect(() => {
+    const handleScore = async () => {
+    if (scoreRef.current <= 0) {
+      return
+    }
+    await fetch('/api/score', {
+      method: 'POST',
+      body: JSON.stringify({
+        username: session?.user?.email?.split("@")[0],
+        score: scoreRef.current
+      })
+    })
+  }
+    if (timer <= 0) {
+      handleScore()
+      scoreRef.current = 0
+    }
+  }, [timer])
+
   const handleNewQuiz = async () => {
     try {
         const response = await fetch('/api/randomquiz')
@@ -95,6 +119,8 @@ const GamePage = () => {
       throw new Error('Error: ' + error)
     }
   }
+
+   
 
   const handleGameStart = async () => {
     try {
@@ -118,19 +144,6 @@ const GamePage = () => {
     
   }
 
-  const handleScore = async () => {
-    if (scoreRef.current <= 0) {
-      return
-    }
-    await fetch('/api/score', {
-      method: 'POST',
-      body: JSON.stringify({
-        username: session?.user?.email?.split("@")[0],
-        score: scoreRef.current
-      })
-    })
-  }
-  
   const handlerAnswer = async () => {
     if (answerInput === answer) {
       scoreRef.current += 1
@@ -139,7 +152,6 @@ const GamePage = () => {
       setAnswer('')
       setAnswerInput('')
       setAlert('')
-      await handleScore()
       await handleNewGame()
       return
     }

@@ -1,9 +1,10 @@
 import { NextResponse, NextRequest } from "next/server";
 import { Score } from "../db/models/Score";
+import connectDB from "../db/connectDB";
 
 export async function POST(req: NextRequest) {
     try {
-
+        await connectDB()
         const { username, score } = await req.json()
 
         const scoreExist = await Score.findOne({ username })

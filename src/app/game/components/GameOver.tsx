@@ -1,7 +1,7 @@
 import React from 'react'
 
 type ChildrenProps = {
-    FuncHandleGame: React.MouseEventHandler<HTMLButtonElement>
+  FuncHandleGame: React.MouseEventHandler<HTMLButtonElement>
 }
 
 const GameOver = ({ FuncHandleGame }: ChildrenProps )  => {
