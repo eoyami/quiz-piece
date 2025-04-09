@@ -8,6 +8,7 @@ const Page = () => {
   const [question, setQuestion] = useState<string>("")
   const [answer, setAnswer] = useState<string>("")
   const [error, setError] = useState<string>("")
+  const [alert, setAlert] = useState<string>("")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -36,6 +37,7 @@ const Page = () => {
         if (inputFileRef.current) {
             inputFileRef.current.value = ''
         }
+        setAlert("Pergunta enviada com sucesso!")
       }
       } catch (e) {
         setError("Error: " + e)
@@ -45,6 +47,7 @@ const Page = () => {
   return (
     <div className='flex flex-col mt-6'>
         <form action="" onSubmit={handleSubmit}>
+        <div className='bg-green-500 text-white'>{alert}</div>
         <div className='flex justify-center'>
           <div className='flex flex-col bg-white text-black p-3 rounded'>
           <label htmlFor="question">Question:</label>
@@ -53,7 +56,7 @@ const Page = () => {
         <input type="text" name='answer' className='outline-hidden border-2 border-gray-900 px-1' placeholder="What's the answer?" onChange={(e: ChangeEvent<HTMLInputElement>) => {setAnswer(e.target.value)}} required />
         <label htmlFor="file">File:</label>
         <input type="file" ref={inputFileRef} required/>
-            <button type='submit' className='bg-gray-900 text-white'>Enviar pergunta</button></div>
+            <button type='submit' className='bg-gray-900 text-white cursor-pointer'>Enviar pergunta</button></div>
           <div className='bg-red-500 text-white'>{error}</div>
         </div>
         </form>
