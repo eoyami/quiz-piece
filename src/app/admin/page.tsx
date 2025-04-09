@@ -32,12 +32,15 @@ const Page = () => {
         }
       )
         if (response.ok) {
-        setQuestion('')
-        setAnswer('')
+        setQuestion("")
+        setAnswer("")
         if (inputFileRef.current) {
             inputFileRef.current.value = ''
         }
         setAlert("Pergunta enviada com sucesso!")
+        setTimeout(() => {
+          setAlert("")
+        }, 3000)
       }
       } catch (e) {
         setError("Error: " + e)
@@ -47,8 +50,8 @@ const Page = () => {
   return (
     <div className='flex flex-col mt-6'>
         <form action="" onSubmit={handleSubmit}>
-        <div className='bg-green-500 text-white'>{alert}</div>
         <div className='flex justify-center'>
+        <div className='bg-green-500 text-white'>{alert}</div>
           <div className='flex flex-col bg-white text-black p-3 rounded'>
           <label htmlFor="question">Question:</label>
             <input type="text" name='question' className='outline-hidden border-2 border-gray-900 px-1' placeholder="What's the question?" onChange={(e: ChangeEvent<HTMLInputElement>) => { setQuestion(e.target.value) }} required />
