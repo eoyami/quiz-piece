@@ -23,7 +23,6 @@ const GamePage = () => {
   }, [session]);
 
   const [gaming, setGaming] = useState<boolean>(false)
-  const [gameOver, setGameOver] = useState<boolean>(false)
 
   
   class CountTimer {
@@ -163,7 +162,19 @@ const GamePage = () => {
 
   return (
     <>
-      {gaming === false ? <button className="bg-green-500 text-black" onClick={handleGameStart}>Começar a jogar</button> : null}
+      {gaming === false ? (
+        <>
+        <div className='flex w-screen justify-center mt-6'>
+        <div className='flex justify-center bg-white text-gray-900 p-3 w-96 rounded'>
+            <div className='flex flex-col my-3'>
+              <div className='flex justify-center text-2xl'><h1>Como jogar:</h1></div>
+              <p className="my-3 text-center">Uma pergunta e uma imagem referente a pergunta irá aparecer, seu objetivo é responder com a resposta exata para a pergunta.</p>
+              <button className="bg-green-500 text-black p-2 rounded text-xl cursor-pointer" onClick={handleGameStart}>Começar a jogar</button>
+            </div>
+        </div>
+    </div>
+        </>
+      ) : null}
       {userSession && gaming ? (
         <section className="flex flex-col w-screen h-screen justify-center items-center bg-neutral-950 max-sm:py-6 max-sm:px-3">
           <div className="flex flex-col justify-center items-center text-2xl">
@@ -187,7 +198,7 @@ const GamePage = () => {
                   </>
                 )
                   : (
-                    <GameOver FuncHandleGame={handleNewGame} />
+                    <GameOver FuncHandleGame={handleNewGame} setIsGaming={setGaming} />
                   )}
               </>
         
